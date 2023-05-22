@@ -1,6 +1,9 @@
+import os
+from time import sleep
+
 from selenium import webdriver
 
-HOST = "localhost"
+SELENOID_HOST = os.getenv("SELENOID_HOST", "localhost")
 
 
 # get google title with VNC session from Firefox browser
@@ -11,10 +14,13 @@ def test_firefox():
         "enableVNC": False,
         "enableVideo": False
     }
-    firefox = webdriver.Remote(command_executor='http://{}:4444/wd/hub'.format(HOST),
-                               desired_capabilities=capabilities)
+    firefox = webdriver.Remote(
+        command_executor=f'http://{SELENOID_HOST}:4444/wd/hub',
+        desired_capabilities=capabilities
+    )
     firefox.get('https://www.google.com')
     print('firefox', firefox.title)
+    sleep(10)
     firefox.quit()
 
 
@@ -26,10 +32,13 @@ def test_chrome():
         "enableVNC": True,
         "enableVideo": False
     }
-    chrome = webdriver.Remote(command_executor='http://{}:4444/wd/hub'.format(HOST),
-                              desired_capabilities=capabilities)
+    chrome = webdriver.Remote(
+        command_executor=f'http://{SELENOID_HOST}:4444/wd/hub',
+        desired_capabilities=capabilities
+    )
     chrome.get('https://www.google.com')
     print('chrome', chrome.title)
+    sleep(10)
     chrome.quit()
 
 

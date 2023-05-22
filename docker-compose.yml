@@ -18,3 +18,11 @@ services:
     ports:
       - "8080:8080"
     command: ["--selenoid-uri", "http://selenoid:4444"]
+
+  app:
+    build: .
+    network_mode: bridge
+    links:
+      - selenoid
+    environment:
+      - SELENOID_HOST=selenoid
