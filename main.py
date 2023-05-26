@@ -4,6 +4,7 @@ from time import sleep
 from selenium import webdriver
 
 SELENOID_HOST = os.getenv("SELENOID_HOST", "localhost")
+BROWSER_NAME = os.getenv("BROWSER", "firefox")
 
 
 # get google title with VNC session from Firefox browser
@@ -43,5 +44,4 @@ def test_chrome():
 
 
 if __name__ == "__main__":
-    test_firefox()
-    test_chrome()
+    test_firefox() if BROWSER_NAME == "firefox" else test_chrome()
