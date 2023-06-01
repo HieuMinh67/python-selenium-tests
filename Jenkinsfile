@@ -1,4 +1,9 @@
 pipeline {
+  parameters {
+    string(defaultValue: 'Space-1', name: 'SpaceId', description: '', trim: true)
+    string(defaultValue: 'Octopus', name: 'ServerId', description: '', trim: true)
+    string(defaultValue: 'Selenoid', name: 'ProjectName', description: '', trim: true)
+  }
   agent any
   stages {
     stage('Parallel Setup') {
@@ -22,6 +27,16 @@ pipeline {
     stage('Push') {
       steps {
         sh 'docker push hieupham0607/selenoid-py:${BUILD_NUMBER}'
+      }
+    }
+
+    stage('Deployment') {
+      steps {
+        octopusCreateRelease(
+          project: params.ProjectName,
+          serverId: params.ServerId,
+          spaceId: params.SpaceId,
+          toolId: 'Default')
       }
     }
   }
