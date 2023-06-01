@@ -36,7 +36,7 @@ pipeline {
           project: params.ProjectName,
           serverId: params.ServerId,
           spaceId: params.SpaceId,
-          releaseVersion: ${BUILD_VERSION},
+          releaseVersion: env.BUILD_NUMBER,
           toolId: 'Default')
       }
     }
