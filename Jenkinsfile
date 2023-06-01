@@ -3,6 +3,7 @@ pipeline {
     string(defaultValue: 'Spaces-1', name: 'SpaceId', description: '', trim: true)
     string(defaultValue: 'Local', name: 'ServerId', description: '', trim: true)
     string(defaultValue: 'Development Project', name: 'ProjectName', description: '', trim: true)
+    string(defaultValue: 'main', name: 'GitRef', description: '', trim: true)
     booleanParam(name: 'IsDeploy', defaultValue: false, description: '')
   }
   agent any
@@ -38,6 +39,7 @@ pipeline {
           serverId: params.ServerId,
           spaceId: params.SpaceId,
           releaseVersion: env.BUILD_NUMBER,
+          gitRef: params.GitRef,
           toolId: 'Default')
       }
     }
