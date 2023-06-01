@@ -38,6 +38,12 @@ pipeline {
           spaceId: params.SpaceId,
           releaseVersion: env.BUILD_NUMBER,
           toolId: 'Default')
+        octopusDeployRelease(
+          project: params.ProjectName,
+          releaseVersion: env.BUILD_NUMBER,
+          serverId: params.ServerId,
+          spaceId: params.SpaceId,
+          toolId: 'Default')
       }
     }
   }
