@@ -2,7 +2,7 @@ pipeline {
   parameters {
     string(defaultValue: 'Space-1', name: 'SpaceId', description: '', trim: true)
     string(defaultValue: 'Octopus', name: 'ServerId', description: '', trim: true)
-    string(defaultValue: 'Selenoid', name: 'ProjectName', description: '', trim: true)
+    string(defaultValue: 'Development Project', name: 'ProjectName', description: '', trim: true)
   }
   agent any
   stages {
