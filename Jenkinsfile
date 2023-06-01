@@ -30,7 +30,7 @@ pipeline {
       }
     }
 
-    stage('Deployment') {
+    stage('Release') {
       steps {
         octopusCreateRelease(
           project: params.ProjectName,
@@ -38,6 +38,12 @@ pipeline {
           spaceId: params.SpaceId,
           releaseVersion: env.BUILD_NUMBER,
           toolId: 'Default')
+      }
+    }
+
+    stage('Deploy') {
+      input(message: "Do you want to deploy this release?", ok:"Deploy")
+      steps {
         octopusDeployRelease(
           project: params.ProjectName,
           releaseVersion: env.BUILD_NUMBER,
