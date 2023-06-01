@@ -1,6 +1,6 @@
 pipeline {
   parameters {
-    string(defaultValue: 'Space-1', name: 'SpaceId', description: '', trim: true)
+    string(defaultValue: 'Spaces-1', name: 'SpaceId', description: '', trim: true)
     string(defaultValue: 'Local', name: 'ServerId', description: '', trim: true)
     string(defaultValue: 'Development Project', name: 'ProjectName', description: '', trim: true)
     booleanParam(name: 'IsDeploy', defaultValue: false, description: '')
