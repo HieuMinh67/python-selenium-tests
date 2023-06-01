@@ -42,8 +42,8 @@ pipeline {
     }
 
     stage('Deploy') {
-      input(message: "Do you want to deploy this release?", ok:"Deploy")
       steps {
+        input(message: "Do you want to deploy this release?", ok:"Deploy")
         octopusDeployRelease(
           project: params.ProjectName,
           releaseVersion: env.BUILD_NUMBER,
