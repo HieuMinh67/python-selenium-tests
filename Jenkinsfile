@@ -11,14 +11,19 @@ pipeline {
   stages {
     stage('Parallel Setup') {
       parallel {
+        stage('Notify on Slack') {
+          steps {
+            slackSend(channel: "#lab", message: "New build(${BUILD_NUMBER}) have been created")
+          }
+        }
+
         stage('Docker Build') {
-          agent any
           steps {
             sh 'docker build -t hieupham0607/selenoid-py:${BUILD_NUMBER} --progress=plain . 2>&1 | tee logs.txt'
           }
         }
 
-        stage('Login') {
+        stage('Login') { 
           steps {
             sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin 2>&1 | tee push.txt'
           }
@@ -64,9 +69,12 @@ pipeline {
     DOCKERHUB_CREDENTIALS = credentials('DockerHub')
   }
   post {
-    always {
+    success {
         archiveArtifacts(artifacts: '**\\*')
     }
 
+    always {
+      sh 'docker logout'
+    }
   }
 }
