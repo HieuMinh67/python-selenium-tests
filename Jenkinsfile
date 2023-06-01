@@ -1,5 +1,6 @@
 pipeline {
   parameters {
+    string(defaultValue: 'Production', description: '', name: 'EnvironmentName', trim: true)
     string(defaultValue: 'Spaces-1', name: 'SpaceId', description: '', trim: true)
     string(defaultValue: 'Local', name: 'ServerId', description: '', trim: true)
     string(defaultValue: 'Development Project', name: 'ProjectName', description: '', trim: true)
@@ -54,6 +55,7 @@ pipeline {
           releaseVersion: env.BUILD_NUMBER,
           serverId: params.ServerId,
           spaceId: params.SpaceId,
+          environment: params.EnvironmentName,
           toolId: 'Default')
       }
     }
