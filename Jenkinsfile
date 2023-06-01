@@ -3,6 +3,7 @@ pipeline {
     string(defaultValue: 'Space-1', name: 'SpaceId', description: '', trim: true)
     string(defaultValue: 'Local', name: 'ServerId', description: '', trim: true)
     string(defaultValue: 'Development Project', name: 'ProjectName', description: '', trim: true)
+    booleanParam(name: 'IsDeploy', defaultValue: false, description: '')
   }
   agent any
   stages {
@@ -42,8 +43,10 @@ pipeline {
     }
 
     stage('Deploy') {
+      when {
+        expression {params.IsDeploy == true}
+      }
       steps {
-        input(message: "Do you want to deploy this release?", ok:"Deploy")
         octopusDeployRelease(
           project: params.ProjectName,
           releaseVersion: env.BUILD_NUMBER,
