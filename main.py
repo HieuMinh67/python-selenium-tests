@@ -8,7 +8,7 @@ BROWSER_NAME = os.getenv("BROWSER", "firefox")
 
 
 # get google title with VNC session from Firefox browser
-def test_firefox():
+def run_firefox():
     capabilities = {
         "browserName": "firefox",
         "version": "72.0",
@@ -21,12 +21,13 @@ def test_firefox():
     )
     firefox.get('https://www.google.com')
     print('firefox', firefox.title)
-    sleep(10)
+    sleep(5)
     firefox.quit()
+    return 'https://www.google.com'
 
 
 # get google title with VNC session from Chrome browser
-def test_chrome():
+def run_chrome():
     capabilities = {
         "browserName": "chrome",
         "version": "80.0_VNC",
@@ -39,9 +40,10 @@ def test_chrome():
     )
     chrome.get('https://www.google.com')
     print('chrome', chrome.title)
-    sleep(10)
+    sleep(5)
     chrome.quit()
+    return 'https://www.google.com'
 
 
 if __name__ == "__main__":
-    test_firefox() if BROWSER_NAME == "firefox" else test_chrome()
+    run_firefox() if BROWSER_NAME == "firefox" else run_chrome()

@@ -7,7 +7,7 @@ COPY lib lib/
 RUN pip install lib/*
 
 COPY main.py .
-COPY test test/
+COPY tests tests/
 
 CMD ["python", "main.py"]
 

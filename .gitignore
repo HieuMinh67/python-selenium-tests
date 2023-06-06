@@ -2,3 +2,4 @@ venv/
 chromedriver
 chromedriver.exe
 .idea/
+.vscode/
