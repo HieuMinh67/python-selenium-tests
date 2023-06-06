@@ -32,6 +32,12 @@ pipeline {
       }
     }
 
+    stage('Run tests') {
+      steps {
+        sh 'docker run --rm -it --rm -e SELNOID_HOST=selenoid --network host hieupham0607/selenoid-py:${BUILD_NUMBER} pytest'
+      }
+    }
+
     stage('Push') {
       steps {
         sh 'docker push hieupham0607/selenoid-py:${BUILD_NUMBER}'
