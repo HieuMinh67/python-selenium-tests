@@ -34,7 +34,7 @@ pipeline {
 
     stage('Run tests') {
       steps {
-        sh 'docker run --rm -it -v ./data:/app/data -e SELNOID_HOST=selenoid --network host hieupham0607/selenoid-py:${BUILD_NUMBER} pytest --cov-report xml:coverage.xml --cov=main'
+        sh 'docker run --rm -v ./data:/app/data -e SELNOID_HOST=selenoid --network host hieupham0607/selenoid-py:${BUILD_NUMBER} pytest --cov-report xml:coverage.xml --cov=main'
       }
     }
 
