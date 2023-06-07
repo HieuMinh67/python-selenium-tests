@@ -34,9 +34,22 @@ pipeline {
 
     stage('Run tests') {
       steps {
-        sh 'docker run --rm -it --rm -e SELNOID_HOST=selenoid --network host hieupham0607/selenoid-py:${BUILD_NUMBER} pytest --cov-report xml:coverage.xml --cov=main --junitxml=result.xml'
+        sh 'docker run --rm -it -v ./data:/app/data -e SELNOID_HOST=selenoid --network host hieupham0607/selenoid-py:${BUILD_NUMBER} pytest --cov-report xml:coverage.xml --cov=main'
       }
     }
+
+    stage('Code quality') {
+      steps {
+        sh 'docker run --rm --net=host -v $PWD:/selenoid sonarsource/sonar-scanner-cli sonar-scanner \
+            -D sonar.projectBaseDir=/selenoid \
+            -D sonar.host.url=http://localhost:9090 \
+            -D sonar.login=50bb61ad483f36bcc4a34dab4dc7b09828805ea1 \
+            -D sonar.sources=. \
+            -D sonar.python.coverage.reportPaths=data/coverage.xml'
+      }
+    }
+
+
 
     stage('Push') {
       steps {
