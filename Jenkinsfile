@@ -7,7 +7,7 @@ pipeline {
     string(defaultValue: 'main', name: 'GitRef', description: '', trim: true)
     booleanParam(name: 'IsDeploy', defaultValue: false, description: '')
   }
-  agent any
+  agent { node { label 'local' } }
   stages {
     stage('Parallel Setup') {
       parallel {

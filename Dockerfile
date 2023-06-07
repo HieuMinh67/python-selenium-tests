@@ -2,9 +2,9 @@ FROM python:3.11.3-slim-bullseye
 
 WORKDIR /app
 
-COPY lib lib/
+COPY requirements.txt requirements.txt
 
-RUN pip install lib/*
+RUN pip install -r requirements.txt
 
 COPY main.py .
 COPY tests tests/
