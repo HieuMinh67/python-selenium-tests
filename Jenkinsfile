@@ -42,7 +42,7 @@ pipeline {
       steps {
         sh 'docker run --rm --net=host -v $PWD:/selenoid sonarsource/sonar-scanner-cli sonar-scanner \
             -D sonar.projectBaseDir=/selenoid \
-            -D sonar.host.url=http://sonarqube:9090 \
+            -D sonar.host.url=http://localhost:9090 \
             -D sonar.login=50bb61ad483f36bcc4a34dab4dc7b09828805ea1 \
             -D sonar.sources=. \
             -D sonar.python.coverage.reportPaths=data/coverage.xml'
