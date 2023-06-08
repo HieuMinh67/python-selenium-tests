@@ -3,3 +3,5 @@ chromedriver
 chromedriver.exe
 .idea/
 .vscode/
+__pycache__/
+.pytest_cache

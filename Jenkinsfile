@@ -34,7 +34,7 @@ pipeline {
 
     stage('Run tests') {
       steps {
-        sh 'docker run --rm -v ./data:/app/data -e SELNOID_HOST=selenoid --network host hieupham0607/selenoid-py:${BUILD_NUMBER} pytest --cov-report xml:coverage.xml --cov=main'
+        sh 'docker run --rm -v $(pwd):/app -e SELNOID_HOST=selenoid --network host hieupham0607/selenoid-py:${BUILD_NUMBER} pytest --cov-report xml:coverage.xml --cov=main'
       }
     }
 
@@ -45,7 +45,7 @@ pipeline {
             -D sonar.host.url=http://localhost:9090 \
             -D sonar.login=50bb61ad483f36bcc4a34dab4dc7b09828805ea1 \
             -D sonar.sources=. \
-            -D sonar.python.coverage.reportPaths=data/coverage.xml'
+            -D sonar.python.coverage.reportPaths=coverage.xml'
       }
     }
 
