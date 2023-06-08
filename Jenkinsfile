@@ -91,9 +91,5 @@ pipeline {
     success {
         archiveArtifacts(artifacts: '**\\*')
     }
-
-    always {
-      sh 'docker logout'
-    }
   }
 }
