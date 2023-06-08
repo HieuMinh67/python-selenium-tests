@@ -58,6 +58,7 @@ pipeline {
     }
 
     stage('Release') {
+      agent none
       steps {
         octopusCreateRelease(
           project: params.ProjectName,
@@ -70,6 +71,7 @@ pipeline {
     }
 
     stage('Deploy') {
+      agent none
       when {
         expression {params.IsDeploy == true}
       }
