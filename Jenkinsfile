@@ -32,6 +32,12 @@ pipeline {
       }
     }
 
+    stage('Dependencies check') {
+      steps {
+        dependencyCheck additionalArguments: 'scan="." --format HTML', odcInstallation: 'OWASP'
+      }
+    }
+
     stage('Code quality') {
       steps {
         sh 'docker run --rm --net=host -v $PWD:/selenoid sonarsource/sonar-scanner-cli sonar-scanner \
@@ -49,14 +55,6 @@ pipeline {
         sh 'docker run --rm -v $(pwd):/app -e SELNOID_HOST=selenoid --network host hieupham0607/selenoid-py:${BUILD_NUMBER} pytest --cov-report xml:coverage.xml --cov=main'
       }
     }
-
-    stage('Dependencies check') {
-      steps {
-        dependencyCheck additionalArguments: 'scan="." --format HTML', odcInstallation: 'OWASP'
-      }
-    }
-
-
 
     stage('Push') {
       steps {
