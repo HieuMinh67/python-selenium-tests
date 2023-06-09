@@ -49,6 +49,12 @@ pipeline {
       }
     }
 
+    stage('Dependencies check') {
+      steps {
+        dependencyCheck additionalArguments: 'scan="." --format HTML', odcInstallation: 'OWASP'
+      }
+    }
+
 
 
     stage('Push') {
