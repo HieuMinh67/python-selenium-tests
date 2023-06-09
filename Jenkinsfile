@@ -45,7 +45,8 @@ pipeline {
             -D sonar.host.url=http://localhost:9090 \
             -D sonar.login=50bb61ad483f36bcc4a34dab4dc7b09828805ea1 \
             -D sonar.sources=. \
-            -D sonar.python.coverage.reportPaths=coverage.xml'
+            -D sonar.python.coverage.reportPaths=coverage.xml \
+            -D sonar.dependencyCheck.htmlReportPath=dependency-check-report.html'
       }
     }
 
