@@ -8,6 +8,9 @@ pipeline {
     booleanParam(name: 'IsDeploy', defaultValue: false, description: '')
   }
   agent { node { label 'local' } }
+  options {
+      skipDefaultCheckout(true)
+  }
   stages {
     stage('Parallel Setup') {
       parallel {
