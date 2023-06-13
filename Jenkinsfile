@@ -28,9 +28,27 @@ pipeline {
           }
         }
 
-        stage('Docker Build') {
+        stage('Dependencies check') {
           steps {
-            sh 'docker build -t hieupham0607/selenoid-py:${BUILD_NUMBER} --progress=plain . 2>&1 | tee logs.txt'
+            dependencyCheck additionalArguments: 'scan="." --format HTML', odcInstallation: 'OWASP'
+          }
+        }
+
+        stage('Code quality') {
+          steps {
+            sh 'docker run --rm --net=host -v $PWD:/selenoid sonarsource/sonar-scanner-cli sonar-scanner \
+                -D sonar.projectBaseDir=/selenoid \
+                -D sonar.host.url=http://localhost:9090 \
+                -D sonar.login=50bb61ad483f36bcc4a34dab4dc7b09828805ea1 \
+                -D sonar.sources=. \
+                -D sonar.python.coverage.reportPaths=coverage.xml \
+                -D sonar.dependencyCheck.htmlReportPath=dependency-check-report.html'
+          }
+        }
+
+        stage('Run tests') {
+          steps {
+            sh 'docker run --rm -v $(pwd):/app -e SELNOID_HOST=selenoid --network host hieupham0607/selenoid-py:${BUILD_NUMBER} pytest --cov-report xml:coverage.xml --cov=main'
           }
         }
 
@@ -43,27 +61,9 @@ pipeline {
       }
     }
 
-    stage('Dependencies check') {
+    stage('Docker Build') {
       steps {
-        dependencyCheck additionalArguments: 'scan="." --format HTML', odcInstallation: 'OWASP'
-      }
-    }
-
-    stage('Code quality') {
-      steps {
-        sh 'docker run --rm --net=host -v $PWD:/selenoid sonarsource/sonar-scanner-cli sonar-scanner \
-            -D sonar.projectBaseDir=/selenoid \
-            -D sonar.host.url=http://localhost:9090 \
-            -D sonar.login=50bb61ad483f36bcc4a34dab4dc7b09828805ea1 \
-            -D sonar.sources=. \
-            -D sonar.python.coverage.reportPaths=coverage.xml \
-            -D sonar.dependencyCheck.htmlReportPath=dependency-check-report.html'
-      }
-    }
-
-    stage('Run tests') {
-      steps {
-        sh 'docker run --rm -v $(pwd):/app -e SELNOID_HOST=selenoid --network host hieupham0607/selenoid-py:${BUILD_NUMBER} pytest --cov-report xml:coverage.xml --cov=main'
+        sh 'docker build -t hieupham0607/selenoid-py:${BUILD_NUMBER} --progress=plain . 2>&1 | tee logs.txt'
       }
     }
 
