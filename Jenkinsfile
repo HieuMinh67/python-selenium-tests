@@ -34,6 +34,12 @@ pipeline {
           }
         }
 
+        stage('Docker Build') {
+          steps {
+            sh 'docker build -t hieupham0607/selenoid-py:${BUILD_NUMBER} --progress=plain . 2>&1 | tee logs.txt'
+          }
+        }
+
         stage('Code quality') {
           steps {
             sh 'docker run --rm --net=host -v $PWD:/selenoid sonarsource/sonar-scanner-cli sonar-scanner \
@@ -46,12 +52,6 @@ pipeline {
           }
         }
 
-        stage('Run tests') {
-          steps {
-            sh 'docker run --rm -v $(pwd):/app -e SELNOID_HOST=selenoid --network host hieupham0607/selenoid-py:${BUILD_NUMBER} pytest --cov-report xml:coverage.xml --cov=main'
-          }
-        }
-
         stage('Login') { 
           steps {
             sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin 2>&1 | tee push.txt'
@@ -61,9 +61,9 @@ pipeline {
       }
     }
 
-    stage('Docker Build') {
+    stage('Run tests') {
       steps {
-        sh 'docker build -t hieupham0607/selenoid-py:${BUILD_NUMBER} --progress=plain . 2>&1 | tee logs.txt'
+        sh 'docker run --rm -v $(pwd):/app -e SELNOID_HOST=selenoid --network host hieupham0607/selenoid-py:${BUILD_NUMBER} pytest --cov-report xml:coverage.xml --cov=main'
       }
     }
 
