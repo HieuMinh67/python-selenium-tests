@@ -12,6 +12,14 @@ pipeline {
       skipDefaultCheckout(true)
   }
   stages {
+    stage("Custom checkout") {
+      steps {
+        checkout scmGit(
+          branches: [[name: "*/master"]],
+          userRemoteConfigs: [[credentialsId: "gogs", url: "http://localhost:10880/henry/Selenoid"]]
+        )
+      }
+    }
     stage('Parallel Setup') {
       parallel {
         stage('Notify on Slack') {
